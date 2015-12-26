@@ -40,7 +40,7 @@ void add_start(list_t* list, void* value) {
 /* Adds an element to the end of the list*/
 void add_end(list_t* list, void* value) {
 	list_elem_t* elem = (list_elem_t*) malloc(sizeof(list_elem_t));
-	memcpy_s(&elem->value, sizeof(elem->value), &value, sizeof(value));
+	memcpy(&elem->value, &value, sizeof(value));
 	elem->next = NULL;
 	if (list->last == NULL) {
 		list->head = elem;
@@ -96,7 +96,7 @@ list_t filter_list(list_t* src, predicate p) {
 	list_t dst = init_list();
 	list_elem_t* elem = src->head;
 	while (elem != NULL) {
-		if (predicate(elem->value))
+		if (p(elem->value))
 			add_end(&dst, elem->value);
 		elem = elem->next;
 	}
