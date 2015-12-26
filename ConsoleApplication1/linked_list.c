@@ -1,7 +1,8 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "linked_list.h"
 #include "collection.h"
 #include <stdlib.h>
+#include <string.h>
 
 void elem_free(void* elem) {
 	free(elem);
@@ -95,7 +96,7 @@ list_t filter_list(list_t* src, predicate p) {
 	list_t dst = init_list();
 	list_elem_t* elem = src->head;
 	while (elem != NULL) {
-		if (function(elem->value))
+		if (predicate(elem->value))
 			add_end(&dst, elem->value);
 		elem = elem->next;
 	}

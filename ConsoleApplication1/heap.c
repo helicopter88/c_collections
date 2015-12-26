@@ -1,5 +1,6 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include <stdlib.h>
+#include <string.h>
 #include "heap.h"
 
 #define LCHILD(x) 2 * x + 1
