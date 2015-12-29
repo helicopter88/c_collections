@@ -13,7 +13,7 @@ heap_t init_heap(comparator cmp) {
     return heap;
 }
 
-void insert_heap(heap_t *heap, void *elem) {
+void insert_heap(heap_t *heap, T elem) {
     if (heap->size) {
         heap->nodes = realloc(heap->nodes, (heap->size + 1) * sizeof(node_t));
     } else {

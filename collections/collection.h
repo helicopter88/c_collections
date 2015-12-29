@@ -1,10 +1,10 @@
 #ifndef COLLECTION_H
 #define COLLECTION_H
 #pragma once
-
-typedef void   (*foreach)    (void*);
-typedef void*  (*mapper)     (void*);
-typedef int    (*comparator) (void*, void*);
-typedef void*  (*folder)     (void*, void*);
-typedef int    (*predicate)  (void*);
+typedef void* T;
+typedef void   (*foreach)    (T);
+typedef void*  (*mapper)     (T);
+typedef int    (*comparator) (T, T);
+typedef void*  (*folder)     (T, T);
+typedef int    (*predicate)  (T);
 #endif

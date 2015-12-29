@@ -5,7 +5,7 @@
 #include "collection.h"
 
 typedef struct node_s {
-	void* data;
+	T data;
 } node_t;
 
 typedef struct heap_s {
@@ -16,9 +16,9 @@ typedef struct heap_s {
 
 heap_t init_heap(comparator cmp);
 
-void insert_heap(heap_t * heap, void * elem);
+void insert_heap(heap_t* heap, T elem);
 
-void destroy_heap(heap_t * heap);
+void destroy_heap(heap_t* heap);
 
 void foreach_heap(heap_t* heap, foreach f);
 
