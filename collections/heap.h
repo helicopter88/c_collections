@@ -14,7 +14,11 @@ typedef struct heap_s {
 	int size;
 } heap_t;
 
+typedef int    (*equals_heap) (node_t*, node_t*);
+
 heap_t init_heap(comparator cmp);
+
+int contains_heap(heap_t *heap, T elem, equals_heap e);
 
 void insert_heap(heap_t* heap, T elem);
 

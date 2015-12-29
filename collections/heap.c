@@ -5,12 +5,28 @@
 #define LCHILD(x) 2 * x + 1
 #define RCHILD(x) 2 * x + 2
 #define PARENT(x) x / 2
+#define TRUE 1
+#define FALSE 0
 
 heap_t init_heap(comparator cmp) {
     heap_t heap;
     heap.size = 0;
     heap.comparator = cmp;
     return heap;
+}
+
+int contains_heap(heap_t *heap, T elem, equals_heap e) {
+    node_t node = {NULL};
+    node.data = elem;
+
+    for (int i = 0; i < heap->size; i++) {
+        if (e(&heap->nodes[i], &node)) {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+
 }
 
 void insert_heap(heap_t *heap, T elem) {
@@ -31,7 +47,7 @@ void insert_heap(heap_t *heap, T elem) {
     memcpy(&heap->nodes[i], &node, sizeof(node));
 }
 
-inline void swap(node_t *n1, node_t *n2) {
+void swap(node_t *n1, node_t *n2) {
 
     node_t temp = *n1;
     *n1 = *n2;
@@ -102,4 +118,4 @@ heap_t map_heap(heap_t *src, mapper m) {
     heap_t h = init_heap(src->comparator);
     map_helper(m, src, &h, 0);
     return h;
-}
+} // map helper doesn't free memory of src and could simply modify src probably. this way there is more space complexity
