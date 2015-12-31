@@ -14,7 +14,7 @@ typedef struct heap_s {
 	int size;
 } heap_t;
 
-typedef int    (*equals_heap) (node_t*, node_t*);
+typedef int    (*equals_heap) (T, T);
 
 heap_t init_heap(comparator cmp);
 

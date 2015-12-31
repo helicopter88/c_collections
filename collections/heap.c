@@ -15,18 +15,20 @@ heap_t init_heap(comparator cmp) {
     return heap;
 }
 
-int contains_heap(heap_t *heap, T elem, equals_heap e) {
-    node_t node = {NULL};
-    node.data = elem;
-
-    for (int i = 0; i < heap->size; i++) {
-        if (e(&heap->nodes[i], &node)) {
-            return TRUE;
-        }
+int contains_helper(heap_t *heap, T elem, equals_heap e, int i) {
+    if (e(&heap->nodes[i].data, elem)) {
+        return TRUE;
     }
+    if (LCHILD(i) < heap->size) {
+        contains_helper(heap, elem, e, LCHILD(i));
+    }
+    if (RCHILD(i) < heap->size) {
+        contains_helper(heap, elem, e, RCHILD(i));
+    }
+}
 
-    return FALSE;
-
+int contains_heap(heap_t *heap, T elem, equals_heap e) {
+    return contains_helper(heap, elem, e, 0);
 }
 
 void insert_heap(heap_t *heap, T elem) {
@@ -118,4 +120,4 @@ heap_t map_heap(heap_t *src, mapper m) {
     heap_t h = init_heap(src->comparator);
     map_helper(m, src, &h, 0);
     return h;
-} // map helper doesn't free memory of src and could simply modify src probably. this way there is more space complexity
+}
