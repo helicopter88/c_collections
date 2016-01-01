@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.2)
 project(c_collections)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_C_FLAGS "-g ${CMAKE_C_FLAGS} -std=c11 -pedantic -Wall -Wextra -Werror")
 
 set(SOURCE_FILES
     collections/collection.h
     collections/heap.c
     collections/heap.h
+    collections/tree.c
+    collections/tree.h
     collections/linked_list.c
     collections/linked_list.h main.c)
 
