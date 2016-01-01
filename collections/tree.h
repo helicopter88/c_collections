@@ -12,9 +12,9 @@ typedef struct tree_node_s {
 	int key;
 	T value;
 	colour c;
-	tree_node_t* parent;
-	tree_node_t* left;
-	tree_node_t* right;
+	struct tree_node_s* parent;
+	struct tree_node_s* left;
+	struct tree_node_s* right;
 } tree_node_t;
 
 typedef tree_node_t* node_ptr;
@@ -24,5 +24,11 @@ typedef struct tree_s {
 } tree_t;
 
 typedef tree_t* tree_ptr;
+
+tree_t init_tree();
+
+T get(tree_ptr tree, int key);
+
+void insert_tree(tree_ptr tree, int key, T value);
 
 #endif

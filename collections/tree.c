@@ -34,11 +34,35 @@ tree_t init_tree() {
 }
 
 
+T search(node_ptr node, int key)
+{
+	if (node == NULL)
+		return NULL;
+
+	if (node->key == key)
+		return node->value;
+
+	if (key < node->key)
+	{
+		return search(node->left, key);
+	}
+	return search(node->right, key);
+}
+
+T get(tree_ptr tree, int key)
+{
+	if(tree->root == NULL)
+	{
+		return NULL;
+	}
+	return search(tree->root, key);
+}
+
 node_ptr rotate_right(node_ptr node)
 {
 	node_ptr old_parent = node->parent;
 	node_ptr old_left = node->left;
-	// Check for nullity
+	// TODO: Check for nullity
 	set_left(node, node->left->right);
 	// reparent
 	old_left->parent = old_parent;
@@ -50,7 +74,7 @@ node_ptr rotate_left(node_ptr node)
 {
 	node_ptr old_parent = node->parent;
 	node_ptr old_right = node->right;
-	// Check for nullity
+	// TODO: Check for nullity
 	set_left(node, node->right->left);
 	// reparent
 	old_right->parent = old_parent;
@@ -62,10 +86,10 @@ node_ptr rotate_left(node_ptr node)
 /*
  Initialise a node
 */
-void init_node(int key, T value, node_ptr* node, node_ptr left, node_ptr right, node_ptr parent)
+void init_node(int key, T value, node_ptr* node, colour c, node_ptr left, node_ptr right, node_ptr parent)
 {
 	*node = malloc(sizeof(tree_node_t));
-	(*node)->c = BLACK;
+	(*node)->c = c;
 	(*node)->key = key;
 	(*node)->value = value;
 	(*node)->parent = parent;
@@ -73,11 +97,18 @@ void init_node(int key, T value, node_ptr* node, node_ptr left, node_ptr right, 
 	(*node)->right = right;
 }
 
+void insert_elem(tree_ptr tree, node_ptr node, int key, T value)
+{
+		
+}
+
 void insert_tree(tree_ptr tree, int key, T value) {
 	if(tree->root == NULL)
 	{
 		node_ptr node;
-		init_node(key, value, &node, NULL, NULL, NULL);
+		init_node(key, value, &node, BLACK, NULL, NULL, NULL);
 		tree->root = node;
+		return;
 	}
+	// TODO: Recurse
 }

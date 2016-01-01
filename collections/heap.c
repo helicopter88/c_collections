@@ -25,6 +25,8 @@ int contains_helper(heap_t *heap, T elem, equals_heap e, int i) {
     if (RCHILD(i) < heap->size) {
         contains_helper(heap, elem, e, RCHILD(i));
     }
+
+	return FALSE;
 }
 
 int contains_heap(heap_t *heap, T elem, equals_heap e) {
