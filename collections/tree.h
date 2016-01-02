@@ -27,7 +27,7 @@ typedef tree_t* tree_ptr;
 
 tree_t init_tree();
 
-T get(tree_ptr tree, int key);
+T get_tree(tree_ptr tree, int key);
 
 void insert_tree(tree_ptr tree, int key, T value);
 

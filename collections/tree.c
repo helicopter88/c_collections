@@ -1,5 +1,6 @@
 #include "tree.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void set_right(node_ptr this, node_ptr new_right)
 {
@@ -36,9 +37,9 @@ tree_t init_tree() {
 
 T search(node_ptr node, int key)
 {
-	if (node == NULL)
+	if (node == NULL) {
 		return NULL;
-
+        }
 	if (node->key == key)
 		return node->value;
 
@@ -49,7 +50,7 @@ T search(node_ptr node, int key)
 	return search(node->right, key);
 }
 
-T get(tree_ptr tree, int key)
+T get_tree(tree_ptr tree, int key)
 {
 	if(tree->root == NULL)
 	{
@@ -86,29 +87,35 @@ node_ptr rotate_left(node_ptr node)
 /*
  Initialise a node
 */
-void init_node(int key, T value, node_ptr* node, colour c, node_ptr left, node_ptr right, node_ptr parent)
+void init_node(int key, T value, node_ptr node, colour c, node_ptr left, node_ptr right, node_ptr parent)
 {
-	*node = malloc(sizeof(tree_node_t));
-	(*node)->c = c;
-	(*node)->key = key;
-	(*node)->value = value;
-	(*node)->parent = parent;
-	(*node)->left = left;
-	(*node)->right = right;
+	node->c = c;
+	node->key = key;
+	node->value = value;
+	node->parent = parent;
+	node->left = left;
+	node->right = right;
 }
 
-void insert_elem(tree_ptr tree, node_ptr node, int key, T value)
-{
-		
+node_ptr insert_elem(node_ptr node, node_ptr parent, int key, T value) {
+  if(node == NULL) {
+    node_ptr ret = malloc(sizeof(tree_node_t));
+    init_node(key, value, ret, RED, NULL, NULL, parent);
+    return ret;
+  }
+  
+  if(node->key == key) {
+    node->value = value;
+  } 
+  if(key < node->key) {
+    set_left(node, insert_elem(node->left, node, key, value));
+  }
+  if(key > node->key) {
+    set_right(node, insert_elem(node->right, node, key, value));
+  }
+  return node;
 }
 
 void insert_tree(tree_ptr tree, int key, T value) {
-	if(tree->root == NULL)
-	{
-		node_ptr node;
-		init_node(key, value, &node, BLACK, NULL, NULL, NULL);
-		tree->root = node;
-		return;
-	}
-	// TODO: Recurse
+  tree->root = insert_elem(tree->root, NULL, key, value);
 }
