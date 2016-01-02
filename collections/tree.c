@@ -97,11 +97,50 @@ void init_node(int key, T value, node_ptr node, colour c, node_ptr left, node_pt
 	node->right = right;
 }
 
+void recolour(node_ptr node, colour c)
+{
+	if(node != NULL) {
+		node->c = c;
+	}
+}
+
+node_ptr find_uncle(node_ptr node) {
+	if (node->parent->left == node)
+		return node->parent->right;
+	else
+		return node->parent->left;
+}
+
+void handle_double_red(node_ptr node)
+{
+	recolour(node->parent, BLACK);
+	recolour(node->parent->parent, RED);
+	node->parent->parent = rotate_left(node->parent->parent);
+}
+
+void check_violations(node_ptr node)
+{
+	if (node == NULL)
+		return;
+	if (node->parent == NULL) {
+		node->c = BLACK;
+		// Check for nullity
+	} else if (node->parent->c == RED && (find_uncle(node) == NULL) || (find_uncle(node)->c == BLACK)) {
+		node = rotate_right(node->parent);
+		handle_double_red(node);
+	} else if (node->parent->c == RED && find_uncle(node)->c == RED) {
+		recolour(node->parent->parent, RED);
+		recolour(node->parent, BLACK);
+		recolour(find_uncle(node), BLACK);
+		check_violations(node->parent->parent);
+	}
+}
 node_ptr insert_elem(node_ptr node, node_ptr parent, int key, T value) {
   if(node == NULL) {
     node_ptr ret = malloc(sizeof(tree_node_t));
     init_node(key, value, ret, RED, NULL, NULL, parent);
-    return ret;
+	check_violations(ret);
+	return ret;
   }
   
   if(node->key == key) {
@@ -113,6 +152,7 @@ node_ptr insert_elem(node_ptr node, node_ptr parent, int key, T value) {
   if(key > node->key) {
     set_right(node, insert_elem(node->right, node, key, value));
   }
+  check_violations(node);
   return node;
 }
 
