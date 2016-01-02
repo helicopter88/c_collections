@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void set_right(node_ptr this, node_ptr new_right)
-{
+void set_right(node_ptr this, node_ptr new_right) {
 	// I may need an equals instead of ==
 	if (this->right != NULL && this->right->parent == this) {
 		this->right->parent = NULL;
@@ -15,8 +14,7 @@ void set_right(node_ptr this, node_ptr new_right)
 	}
 }
 
-void set_left(node_ptr this, node_ptr new_left)
-{
+void set_left(node_ptr this, node_ptr new_left) {
 	// I may need an equals instead of ==
 	if (this->left != NULL && this->left->parent == this) {
 		this->left->parent = NULL;
@@ -35,32 +33,27 @@ tree_t init_tree() {
 }
 
 
-T search(node_ptr node, int key)
-{
+T search(node_ptr node, int key) {
 	if (node == NULL) {
 		return NULL;
-        }
+	}
 	if (node->key == key)
 		return node->value;
 
-	if (key < node->key)
-	{
+	if (key < node->key) {
 		return search(node->left, key);
 	}
 	return search(node->right, key);
 }
 
-T get_tree(tree_ptr tree, int key)
-{
-	if(tree->root == NULL)
-	{
+T get_tree(tree_ptr tree, int key) {
+	if (tree->root == NULL) {
 		return NULL;
 	}
 	return search(tree->root, key);
 }
 
-node_ptr rotate_right(node_ptr node)
-{
+node_ptr rotate_right(node_ptr node) {
 	node_ptr old_parent = node->parent;
 	node_ptr old_left = node->left;
 	// TODO: Check for nullity
@@ -71,8 +64,7 @@ node_ptr rotate_right(node_ptr node)
 	return old_left;
 }
 
-node_ptr rotate_left(node_ptr node)
-{
+node_ptr rotate_left(node_ptr node) {
 	node_ptr old_parent = node->parent;
 	node_ptr old_right = node->right;
 	// TODO: Check for nullity
@@ -87,8 +79,7 @@ node_ptr rotate_left(node_ptr node)
 /*
  Initialise a node
 */
-void init_node(int key, T value, node_ptr node, colour c, node_ptr left, node_ptr right, node_ptr parent)
-{
+void init_node(int key, T value, node_ptr node, colour c, node_ptr left, node_ptr right, node_ptr parent) {
 	node->c = c;
 	node->key = key;
 	node->value = value;
@@ -97,9 +88,8 @@ void init_node(int key, T value, node_ptr node, colour c, node_ptr left, node_pt
 	node->right = right;
 }
 
-void recolour(node_ptr node, colour c)
-{
-	if(node != NULL) {
+void recolour(node_ptr node, colour c) {
+	if (node != NULL) {
 		node->c = c;
 	}
 }
@@ -111,15 +101,13 @@ node_ptr find_uncle(node_ptr node) {
 		return node->parent->left;
 }
 
-void handle_double_red(node_ptr node)
-{
+void handle_double_red(node_ptr node) {
 	recolour(node->parent, BLACK);
 	recolour(node->parent->parent, RED);
 	node->parent->parent = rotate_left(node->parent->parent);
 }
 
-void check_violations(node_ptr node)
-{
+void check_violations(node_ptr node) {
 	if (node == NULL)
 		return;
 	if (node->parent == NULL) {
@@ -135,27 +123,41 @@ void check_violations(node_ptr node)
 		check_violations(node->parent->parent);
 	}
 }
+
 node_ptr insert_elem(node_ptr node, node_ptr parent, int key, T value) {
-  if(node == NULL) {
-    node_ptr ret = malloc(sizeof(tree_node_t));
-    init_node(key, value, ret, RED, NULL, NULL, parent);
-	check_violations(ret);
-	return ret;
-  }
-  
-  if(node->key == key) {
-    node->value = value;
-  } 
-  if(key < node->key) {
-    set_left(node, insert_elem(node->left, node, key, value));
-  }
-  if(key > node->key) {
-    set_right(node, insert_elem(node->right, node, key, value));
-  }
-  check_violations(node);
-  return node;
+	if (node == NULL) {
+		node_ptr ret = malloc(sizeof(tree_node_t));
+		init_node(key, value, ret, RED, NULL, NULL, parent);
+		check_violations(ret);
+		return ret;
+	}
+
+	if (node->key == key) {
+		node->value = value;
+	}
+	if (key < node->key) {
+		set_left(node, insert_elem(node->left, node, key, value));
+	}
+	if (key > node->key) {
+		set_right(node, insert_elem(node->right, node, key, value));
+	}
+	check_violations(node);
+	return node;
 }
 
 void insert_tree(tree_ptr tree, int key, T value) {
-  tree->root = insert_elem(tree->root, NULL, key, value);
+	tree->root = insert_elem(tree->root, NULL, key, value);
 }
+
+void foreach_helper(node_ptr node, foreach f) {
+	f(node->value);
+	if (node->left)
+		foreach_helper(node->left, f);
+	if (node->right)
+		foreach_helper(node->right, f);
+}
+void foreach_tree(tree_ptr tree, foreach f) {
+	if (tree->root)
+		foreach_helper(tree->root, f);
+}
+

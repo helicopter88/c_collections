@@ -31,4 +31,5 @@ T get_tree(tree_ptr tree, int key);
 
 void insert_tree(tree_ptr tree, int key, T value);
 
+void foreach_tree(tree_ptr tree, foreach f);
 #endif
