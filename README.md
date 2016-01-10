@@ -1,4 +1,6 @@
 # Collections
+
+[![Join the chat at https://gitter.im/helicopter88/c_collections](https://badges.gitter.im/helicopter88/c_collections.svg)](https://gitter.im/helicopter88/c_collections?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 A collection of Java style collections written in C
 So far, the collections included are:
 * LinkedList
